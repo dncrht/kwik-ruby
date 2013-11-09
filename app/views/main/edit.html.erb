@@ -1,0 +1,30 @@
+<%= form_tag edit_path(@page), :method => :put do %>
+  <div class="row-fluid">
+    <div class="span3" id="panel">
+
+      <%= render 'breadcrumbs' %>
+
+      <div class="well clearfix">
+        <%= submit_tag 'Save', :class => 'btn btn-primary', :accesskey => 's', :title => 'Saves changes to this page [Ctrl+S]' %>
+
+        <div class="pull-right">
+          <%= link_to 'Cancel', show_path(@page), :class => 'btn', :title => 'Cancels page edition' %>
+          <%= link_to 'Delete', show_path(@page), :class => 'btn btn-danger', :title => 'Deletes current page from disk, forever', :confirm => 'This will delete the current page. Are you sure?', :method => :delete %>
+        </div>
+
+        <label class="checkbox"><%= check_box_tag :preview, true, false, :accesskey => 'p', :title => 'Click to preview page instead of definitely saving' %> Preview changes</label>
+      </div>
+
+      <%= format_headings(@headings) %>
+
+    </div>
+
+    <div class="span9 pull-right">
+
+      <textarea name="content" rows="25" class="prettyprint"><%= @page.content %></textarea>
+
+      <%= @parsed_content.html_safe %>
+
+    </div>
+  </div>
+<% end %>

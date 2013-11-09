@@ -1,0 +1,1 @@
+Kwik::Application.config.PAGES_PATH = "#{Rails.root}/pages"

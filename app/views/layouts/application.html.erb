@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @page.title %></title>
+    <meta charset="UTF-8">
+    <%= stylesheet_link_tag 'application', :media => 'all' %>
+  </head>
+  
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <%= form_tag root_path, :method => :get do %>
+          <div class="container-fluid">
+            <%= link_to @page.title, show_path(@page), :class => 'brand' %>
+            
+            <ul class="nav pull-right">
+              <li class="divider-vertical"></li>
+              <li class="navbar-form">
+                <%= text_field_tag :terms, @terms, :accesskey => 'f', :title => 'Search or create a term [Ctrl+K]' %>
+                <%= submit_tag 'Search', :class => 'btn btn-primary', :title => 'Searches for the term in existing pages' %>
+                <%= submit_tag 'Create', :id => 'create_btn', :class => 'btn', :title => 'Creates a page with the specified term, or leads to the page if already exists' %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="container-fluid">
+      
+        <%= yield %>
+      
+    </div>
+
+    <%= javascript_include_tag 'application' %>
+  </body>
+</html>

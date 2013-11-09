@@ -1,0 +1,21 @@
+<div class="row-fluid">
+  <div class="span3" id="panel">
+
+    <%= render 'breadcrumbs' %>
+
+    <% if @page.exist? %>
+      <div class="well">
+        <%= link_to 'Edit page', edit_path(@page), :class => 'btn btn-primary', :accesskey => 'e', :title => 'Changes this page to edition mode' %>
+      </div>
+    <% end %>
+
+    <%= format_headings(@headings) %>
+
+  </div>
+
+  <div class="span9 pull-right">
+
+    <%= @parsed_content.html_safe %>
+
+  </div>
+</div>

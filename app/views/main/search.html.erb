@@ -1,0 +1,36 @@
+<div class="row-fluid">
+  <div class="span3" id="panel">
+
+    <%= render 'breadcrumbs' %>
+
+  </div>
+
+  <div class="span9 pull-right">
+
+    <h2>Search results</h2>
+
+    <h3>Page name matches</h3>
+
+    <% if @page.name_matches.present? %>
+      <ul>
+        <% @page.name_matches.each do |page_name| %>
+          <li><%= link_to page_name.gsub('_', ' '), show_path(page_name) %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      Nothing found... Click on the Create button to create a page named <%= params[:terms] %>.
+    <% end %>
+
+    <h3>Page content matches</h3>
+
+    <% @page.content_matches.each do |page_name, matching_lines| %>
+      <ul>
+        <li><%= link_to page_name, show_path(page_name) %></li>
+      </ul>
+      <% if matching_lines.present? %>
+        <pre><% matching_lines.each do |line| %><%= line %><% end %></pre>
+      <% end %>
+    <% end %>
+
+  </div>
+</div>
