@@ -1,0 +1,42 @@
+$green: #099c09
+$yellow: #ffea7b
+
+$linkColor: $green
+$navbarBackgroundHighlight: $yellow
+$navbarBackground: #f1c837
+$navbarBorder: $green
+$navbarBrandColor: #000
+
+@import 'bootstrap'
+
+body
+  padding-top: 60px
+  background: url(<%= image_path 'body_bg.png' %>) repeat-y
+
+.navbar .brand
+  font-weight: bold
+
+form
+  margin: 0
+
+.well
+  border: none
+  +box-shadow(none)
+
+#jumpers
+  margin: 20px 0 0 0
+  list-style: none
+  li
+    display: block
+
+h2, h3, h4, h5, h6
+  border-bottom: 1px solid $green
+
+.span9
+  padding-bottom: 20px
+  ul
+    list-style-position: inside
+
+textarea
+  width: 100%
+  font-family: $monoFontFamily
