@@ -97,7 +97,7 @@ describe MainController do
     end
 
     it 'should show an update preview' do
-      put :update, page: 'Page', content: 'unparsed content', preview: true
+      put :preview, page: 'Page', content: 'unparsed content'
 
       assigns(:page).content.should eq 'unparsed content'
       assigns(:headings).should eq []

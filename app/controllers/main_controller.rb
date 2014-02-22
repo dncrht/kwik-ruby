@@ -43,16 +43,18 @@ class MainController < ApplicationController
     parse_content
   end
 
+  def preview
+    @page.content = params[:content]
+
+    parse_content
+    render :edit
+  end
+
   def update
     @page.content = params[:content]
 
-    if params[:preview].blank?
-      @page.save
-      redirect_to show_path(@page)
-    else
-      parse_content
-      render :edit
-    end
+    @page.save
+    redirect_to show_path(@page)
   end
 
   def destroy

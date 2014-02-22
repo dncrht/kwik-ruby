@@ -6,6 +6,7 @@ Kwik::Application.routes.draw do
   get 'All' => 'main#show_all', :page => 'All', :as => :show_all
   get ':page' => 'main#show', :as => :show
   get ':page/edit' => 'main#edit', :as => :edit
+  put ':page/edit' => 'main#preview', :constraints => lambda { |request| request.params[:commit] == 'Preview' }
   put ':page/edit' => 'main#update'
   delete ':page' => 'main#destroy'
 

@@ -6,12 +6,11 @@
 
       <div class="well clearfix">
         <%= submit_tag 'Save', :class => 'btn btn-primary', :accesskey => 's', :title => 'Saves changes to this page [Ctrl+S]' %>
+        <%= submit_tag 'Preview', :class => 'btn', :accesskey => 'p', :title => 'Preview page changes instead of saving [Ctrl+P]' %>
 
         <div class="pull-right">
           <%= link_to 'Delete', show_path(@page), :class => 'btn btn-danger', :title => 'Deletes current page from disk, forever', :confirm => 'This will delete the current page. Are you sure?', :method => :delete %>
         </div>
-
-        <label class="checkbox"><%= check_box_tag :preview, true, false, :accesskey => 'p', :title => 'Click to preview page instead of definitely saving' %> Preview changes</label>
       </div>
 
       <%= format_headings(@headings) %>
