@@ -9,7 +9,7 @@ class Page
   end
 
   def to_s
-    @name
+    name
   end
 
   def exist?
@@ -17,7 +17,7 @@ class Page
   end
 
   def path
-    "#{Kwik::Application.config.PAGES_PATH}/#{@name}"
+    "#{Kwik::Application.config.PAGES_PATH}/#{name}"
   end
 
   def load(show_or_edit = :for_show)
@@ -42,7 +42,7 @@ class Page
   end
 
   def destroy
-    File.delete(path) if exist? && @name != 'Main_page'
+    File.delete(path) if exist? && name != 'Main_page'
   end
 
   def search_names(terms)
