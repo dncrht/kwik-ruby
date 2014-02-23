@@ -5,7 +5,7 @@ Kwik::Application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
 describe MainController do
 
   let(:page_file) { "#{Kwik::Application.config.PAGES_PATH}/Page" }
-  let(:main_page_file) { "#{Kwik::Application.config.PAGES_PATH}/Main_page" }
+  let(:main_page_file) { "#{Kwik::Application.config.PAGES_PATH}/#{Kwik::Application.config.MAIN_PAGE}" }
   let(:content) { 'unparsed content' }
   let(:html_content) { "<p>unparsed content</p>\n" }
 
@@ -22,7 +22,7 @@ describe MainController do
     context 'Main page' do
       let(:params) { nil }
 
-      it { assigns(:page).to_s.should eq 'Main_page' }
+      it { assigns(:page).to_s.should eq Kwik::Application.config.MAIN_PAGE }
       it { assigns(:page).title.should eq 'Main page' }
       it { assigns(:page).content.should eq 'unparsed main content' }
       it { assigns(:headings).should eq [] }
@@ -63,7 +63,7 @@ describe MainController do
   end
 
   describe '#show_all' do
-    before { get :show_all, page: 'All' }
+    before { get :show_all, page: Kwik::Application.config.ALL_PAGE }
 
     it { assigns(:all_pages).should eq ['Page'] }
     it { response.should render_template(:show_all) }
@@ -73,7 +73,7 @@ describe MainController do
     before { get :edit, params }
 
     context 'not allowed to edit All' do
-      let(:params) { {page: 'All'} }
+      let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
 
       it { response.should redirect_to(show_all_path) }
     end
@@ -88,7 +88,7 @@ describe MainController do
     end
 
     context 'not allowed to update All' do
-      let(:params) { {page: 'All'} }
+      let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
 
       it { response.should redirect_to(show_all_path) }
     end
@@ -113,7 +113,7 @@ describe MainController do
     before { delete :destroy, params }
 
     context 'not allowed the deletion of the Main page' do
-      let(:params) { {page: 'Main_page'} }
+      let(:params) { {page: Kwik::Application.config.MAIN_PAGE} }
 
       it { response.should redirect_to(root_path) }
     end
@@ -152,7 +152,7 @@ describe MainController do
     end
 
     it 'should reject access to show_all' do
-      get :show_all, page: 'All'
+      get :show_all, page: Kwik::Application.config.ALL_PAGE
       response.status.should eq 401
     end
 

@@ -42,13 +42,13 @@ class Page
   end
 
   def destroy
-    File.delete(path) if exist? && name != 'Main_page'
+    File.delete(path) if exist? && name != Kwik::Application.config.MAIN_PAGE
   end
 
   def search_names(terms)
     @search_names ||= self.class.pages_in_directory do |file|
       file if file.downcase.include? terms.downcase
-    end.compact.tap { |search_names| search_names << terms if terms == 'All' }
+    end.compact.tap { |search_names| search_names << terms if terms == Kwik::Application.config.ALL_PAGE }
   end
 
   def search_content(terms)
@@ -65,7 +65,7 @@ class Page
 
   def self.all
     @all ||= pages_in_directory do |file|
-      if file[0, 1] != '.' && file != 'Main_page'
+      if file[0, 1] != '.' && file != Kwik::Application.config.MAIN_PAGE
         file
       end
     end.compact

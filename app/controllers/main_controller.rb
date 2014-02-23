@@ -89,7 +89,7 @@ class MainController < ApplicationController
   # Sets page name on page object.
   #
   def set_page_by_name
-    name = params[:page] || 'Main_page'
+    name = params[:page] || Kwik::Application.config.MAIN_PAGE
 
     @page = Page.new(name)
   end
@@ -98,7 +98,7 @@ class MainController < ApplicationController
   # It is a special page, not to be found in the filesystem.
   #
   def cannot_edit_All
-    if @page.name == 'All'
+    if @page.name == Kwik::Application.config.ALL_PAGE
       redirect_to show_all_path
     end
   end

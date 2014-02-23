@@ -52,7 +52,7 @@ describe Page do
   end
 
   it 'should return pages that match the content' do
-    expect(page.search_content 'content').to eq({'Main_page' => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
+    expect(page.search_content 'content').to eq({Kwik::Application.config.MAIN_PAGE => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
   end
 
   it 'should save' do
