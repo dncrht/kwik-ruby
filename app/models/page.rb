@@ -46,7 +46,7 @@ class Page
   end
 
   def search_names(terms)
-    @search_names ||= Dir.entries(Kwik::Application.config.PAGES_PATH).sort.map do |file|
+    @search_names ||= self.class.pages_in_directory do |file|
       file if file.downcase.include? terms.downcase
     end.compact.tap { |search_names| search_names << terms if terms == 'All' }
   end
@@ -64,10 +64,18 @@ class Page
   end
 
   def self.all
-    @all ||= Dir.entries(Kwik::Application.config.PAGES_PATH).sort.map do |file|
+    @all ||= pages_in_directory do |file|
       if file[0, 1] != '.' && file != 'Main_page'
         file
       end
     end.compact
+  end
+
+  private
+
+  def self.pages_in_directory
+    Dir.entries(Kwik::Application.config.PAGES_PATH).sort.map do |file|
+      yield file
+    end
   end
 end
