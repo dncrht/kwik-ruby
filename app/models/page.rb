@@ -23,13 +23,13 @@ class Page
   def load(show_or_edit = :for_show)
     if exist?
       file = File.open path, 'r'
-      @content = file.read
+      self.content = file.read
       file.close
     else
       if show_or_edit == :for_show
-        @content = "Page doesn't exist. Click on the button above to create it."
+        self.content = "Page doesn't exist. Click on the button above to create it."
       else
-        @content = 'Start here to write the page content.'
+        self.content = 'Start here to write the page content.'
       end
     end
   end
@@ -37,7 +37,7 @@ class Page
   def save
     FileUtils.mkdir_p Kwik::Application.config.PAGES_PATH #mkdir_p avoids exception if directory exists
     file = File.open path, 'w'
-    file.write @content
+    file.write content
     file.close
   end
 
