@@ -5,11 +5,13 @@
       <%= render 'breadcrumbs' %>
 
       <div class="well clearfix">
-        <%= submit_tag 'Save', :class => 'btn btn-primary', :accesskey => 's', :title => 'Saves changes to this page [Ctrl+S]' %>
-        <%= submit_tag 'Preview', :class => 'btn', :accesskey => 'p', :title => 'Preview page changes instead of saving [Ctrl+P]' %>
-
+        <div class="btn-group">
+          <%= submit_tag 'Save', :class => 'btn btn-primary btn-small', :accesskey => 's', :title => 'Saves changes to this page [Ctrl+S]' %>
+          <%= submit_tag 'Preview', :class => 'btn btn-small', :accesskey => 'p', :title => 'Preview page changes instead of saving [Ctrl+P]' %>
+          <%= link_to 'Cancel', show_path(@page), :class => 'btn btn-small', :title => 'Cancel page edition' %>
+        </div>
         <div class="pull-right">
-          <%= link_to 'Delete', show_path(@page), :class => 'btn btn-danger', :title => 'Deletes current page from disk, forever', :confirm => 'This will delete the current page. Are you sure?', :method => :delete %>
+          <%= link_to 'Delete', show_path(@page), :class => 'btn btn-danger btn-small', :title => 'Deletes current page from disk, forever', :confirm => 'This will delete the current page. Are you sure?', :method => :delete %>
         </div>
       </div>
 
