@@ -64,12 +64,10 @@ class Page
   end
 
   def self.all
-    all_pages = []
-    Dir.entries(Kwik::Application.config.PAGES_PATH).sort.each do |file|
+    @all ||= Dir.entries(Kwik::Application.config.PAGES_PATH).sort.map do |file|
       if file[0, 1] != '.' && file != 'Main_page'
-        all_pages << file
+        file
       end
-    end
-    all_pages
+    end.compact
   end
 end
