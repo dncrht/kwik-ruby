@@ -2,80 +2,71 @@ require 'spec_helper'
 
 describe Page do
 
-  before :all do
-    Kwik::Application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
-    @page_path = "#{Kwik::Application.config.PAGES_PATH}/Page"
-    @page = Page.new('Page')
-  end
+  let(:page_file) { "#{Rails.root}/spec/pages/Page" }
+  let(:content) { 'unparsed content' }
+  let(:page) { Page.new('Page') }
 
   before do
-    unless File.exist? @page_path
-      File.open(@page_path, 'w') { |f| f.write 'unparsed content' }
-    end
+    File.open(page_file, 'w') { |f| f.write content } unless File.exist? page_file
   end
 
   it 'should return a page object' do
-    @page.should be_an_instance_of Page
+    expect(page).to be_a Page
   end
 
   it 'should return the name of the page' do
-    @page.to_s.should eq @page.name
-    @page.to_s.should eq 'Page'
+    expect(page.to_s).to eq 'Page'
   end
 
   it 'should return the path of the page' do
-    @page.path.should eq @page_path
+    expect(page.path).to eq page_file
   end
 
   it 'should load an existing page' do
-    @page.load
-    @page.content.should eq 'unparsed content'
+    page.load
+    expect(page.content).to eq content
   end
 
   it "should load a page that doesn't exists in show mode" do
-    File.delete(@page_path)
-    @page.load(:for_show)
-    @page.content.should eq "Page doesn't exist. Click on the button above to create it."
+    File.delete(page_file)
+    page.load(:for_show)
+    expect(page.content).to eq "Page doesn't exist. Click on the button above to create it."
   end
 
-  it "should load a page that doesn't exists in edit mode" do
-    File.delete(@page_path)
-    @page.load(:for_edit)
-    @page.content.should eq 'Start here to write the page content.'
+  it "should load a page that doesn't exist in edit mode" do
+    File.delete(page_file)
+    page.load(:for_edit)
+    expect(page.content).to eq 'Start here to write the page content.'
   end
 
   it 'should return all pages' do
-    all_pages = Page.all
-    all_pages.should be_an_instance_of Array
-    all_pages.should eq ['Page']
+    expect(Page.all).to eq ['Page']
   end
 
   it 'should return pages that match the name' do
-    @page.search_names 'content'
-    @page.name_matches.should be_an_instance_of Array
-    @page.name_matches.should eq []
+    page.search_names 'content'
+    expect(page.name_matches).to eq []
   end
 
   it 'should return pages that match the content' do
-    @page.search_content 'content'
-    @page.content_matches.should be_an_instance_of Hash
-    @page.content_matches.should eq({'Main_page' => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
+    page.search_content 'content'
+    expect(page.content_matches).to eq({'Main_page' => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
   end
 
   it 'should save' do
-    @page.content = 'new test text'
-    @page.save
-    File.open(@page_path, 'r').read.should eq 'new test text'
+    page.content = 'new test text'
+    page.save
+    expect(File.open(page_file, 'r').read).to eq 'new test text'
   end
 
   it 'should destroy' do
-    @page.destroy
-    File.exist?(@page_path).should_not be_true
+    page.destroy
+    expect(File.exist?(page_file)).to be_false
   end
 
   it 'should not fail if destroy' do
-    File.delete(@page_path)
-    @page.destroy
-    File.exist?(@page_path).should_not be_true
+    File.delete(page_file)
+    page.destroy
+    expect(File.exist?(page_file)).to be_false
   end
 end
