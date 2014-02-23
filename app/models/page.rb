@@ -1,6 +1,6 @@
 class Page
 
-  attr_reader :name, :title, :name_matches, :content_matches
+  attr_reader :name, :title
   attr_accessor :content
 
   def initialize(name)
@@ -46,22 +46,20 @@ class Page
   end
 
   def search_names(terms)
-    @name_matches = []
-    Dir.entries(Kwik::Application.config.PAGES_PATH).sort.each do |file|
-      if file.downcase.include? terms.downcase
-        @name_matches << file
-      end
-    end
-
-    @name_matches << terms if terms == 'All'
+    @search_names ||= Dir.entries(Kwik::Application.config.PAGES_PATH).sort.map do |file|
+      file if file.downcase.include? terms.downcase
+    end.compact.tap { |search_names| search_names << terms if terms == 'All' }
   end
 
   def search_content(terms)
-    @content_matches = Hash.new { |h, k| h[k] = [] } #http://stackoverflow.com/questions/2698460/strange-ruby-behavior-when-using-hash-new
-    results = `cd "#{Kwik::Application.config.PAGES_PATH}"; grep '#{terms}' *` #TODO case insensitive search
-    results.split("\n").each do |result|
-      page, matching_line = result.split(':', 2)
-      @content_matches[page] << matching_line << "\n"
+    @search_content ||= begin
+      search_content = Hash.new { |h, k| h[k] = [] } #http://stackoverflow.com/questions/2698460/strange-ruby-behavior-when-using-hash-new
+      results = `cd "#{Kwik::Application.config.PAGES_PATH}"; grep '#{terms}' *` #TODO case insensitive search
+      results.split("\n").each do |result|
+        page, matching_line = result.split(':', 2)
+        search_content[page] << matching_line << "\n"
+      end
+      search_content
     end
   end
 

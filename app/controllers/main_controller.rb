@@ -71,9 +71,9 @@ class MainController < ApplicationController
       return
     end
 
-    @page.search_names(@terms)
+    @search_names = @page.search_names(@terms)
 
-    @page.search_content(@terms)
+    @search_content = @page.search_content(@terms)
   end
 
   private

@@ -11,9 +11,9 @@
 
     <h3>Page name matches</h3>
 
-    <% if @page.name_matches.present? %>
+    <% if @search_names.present? %>
       <ul>
-        <% @page.name_matches.each do |page_name| %>
+        <% @search_names.each do |page_name| %>
           <li><%= link_to page_name.gsub('_', ' '), show_path(page_name) %></li>
         <% end %>
       </ul>
@@ -23,7 +23,7 @@
 
     <h3>Page content matches</h3>
 
-    <% @page.content_matches.each do |page_name, matching_lines| %>
+    <% @search_content.each do |page_name, matching_lines| %>
       <ul>
         <li><%= link_to page_name, show_path(page_name) %></li>
       </ul>

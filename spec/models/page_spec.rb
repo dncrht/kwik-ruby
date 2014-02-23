@@ -44,13 +44,15 @@ describe Page do
   end
 
   it 'should return pages that match the name' do
-    page.search_names 'content'
-    expect(page.name_matches).to eq []
+    expect(page.search_names 'content').to eq []
+  end
+
+  it "should return All although it doesn't exist" do
+    expect(page.search_names 'All').to eq ['All']
   end
 
   it 'should return pages that match the content' do
-    page.search_content 'content'
-    expect(page.content_matches).to eq({'Main_page' => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
+    expect(page.search_content 'content').to eq({'Main_page' => ['unparsed main content', "\n"], 'Page' => ['unparsed content', "\n"]})
   end
 
   it 'should save' do
