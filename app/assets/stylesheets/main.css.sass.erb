@@ -25,9 +25,18 @@ form
 
 #jumpers
   margin: 20px 0 0 0
-  list-style: none
+  ol // Taken from https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Counters
+    margin: 0
+    counter-reset: section
+    list-style-type: none
+    ol
+      margin-left: 30px
   li
     display: block
+    color: $green
+    &:before
+      counter-increment: section
+      content: counters(section,".") ". "
 
 h2, h3, h4, h5, h6
   border-bottom: 1px solid $green

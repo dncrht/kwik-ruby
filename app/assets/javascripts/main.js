@@ -17,6 +17,12 @@ $(document).keyup(function() {
     }
 });
 
+$('#jumpers').nestedToc({container: '.span9', ignoreH: 1});
+
+if ($('#jumpers').html() == '') {
+  $('#jumpers').remove();
+}
+
 $('#panel').css('position', 'fixed');
 if ($('#jumpers').is('ul')) {
     $('#jumpers').css('overflow-y', 'auto');
