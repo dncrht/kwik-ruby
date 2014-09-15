@@ -8,11 +8,11 @@ $(document).keyup(function() {
         isCtrl = true;
     }
     if (e.which == 83 && isCtrl) { //Control+S
-        $('button[name=save]').click();
+        $('.js-save').click();
         return false;
     }
     if (e.which == 75 && isCtrl) { //Control+K
-        $('input[name=terms]').focus();
+        $('.js-terms').focus();
         return false;
     }
 });
