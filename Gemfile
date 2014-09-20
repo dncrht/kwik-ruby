@@ -2,7 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-gem 'marker'
+gem 'wikicloth'
+gem 'kramdown'
 
 group :assets do
   gem 'sass-rails', '~> 3.2.3'

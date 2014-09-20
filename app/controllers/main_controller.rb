@@ -104,6 +104,6 @@ class MainController < ApplicationController
   end
 
   def parse_content
-    @headings, @parsed_content = [], Marker.parse(@page.content).to_html
+    @parsed_content = ParseContent.new(@page.content).call
   end
 end
