@@ -7,7 +7,7 @@ describe MainController do
   let(:page_file) { "#{Kwik::Application.config.PAGES_PATH}/Page" }
   let(:main_page_file) { "#{Kwik::Application.config.PAGES_PATH}/#{Kwik::Application.config.MAIN_PAGE}" }
   let(:content) { 'unparsed content' }
-  let(:html_content) { "<p>unparsed content</p>\n" }
+  let(:html_content) { "\n<p>unparsed content</p>" }
 
   before do
     File.open(page_file, 'w') { |f| f.write content } unless File.exist? page_file
@@ -25,8 +25,7 @@ describe MainController do
       it { assigns(:page).to_s.should eq Kwik::Application.config.MAIN_PAGE }
       it { assigns(:page).title.should eq 'Main page' }
       it { assigns(:page).content.should eq 'unparsed main content' }
-      it { assigns(:headings).should eq [] }
-      it { assigns(:parsed_content).should eq "<p>unparsed main content</p>\n" }
+      it { assigns(:parsed_content).should eq "\n<p>unparsed main content</p>" }
       it { response.should render_template(:show) }
     end
 
@@ -36,7 +35,6 @@ describe MainController do
       it { assigns(:page).to_s.should eq 'Page' }
       it { assigns(:page).title.should eq 'Page' }
       it { assigns(:page).content.should eq content }
-      it { assigns(:headings).should eq [] }
       it { assigns(:parsed_content).should eq html_content }
       it { response.should render_template(:show) }
     end
@@ -56,8 +54,7 @@ describe MainController do
       it { assigns(:page).to_s.should eq 'unexisting' }
       it { assigns(:page).title.should eq 'unexisting' }
       it { assigns(:page).content.should eq "Page doesn't exist. Click on the button above to create it." }
-      it { assigns(:headings).should eq [] }
-      it { assigns(:parsed_content).should eq "<p>Page doesn't exist. Click on the button above to create it.</p>\n" }
+      it { assigns(:parsed_content).should eq "\n<p>Page doesn't exist. Click on the button above to create it.</p>" }
       it { response.should render_template(:show) }
     end
   end
@@ -82,7 +79,6 @@ describe MainController do
       let(:params) { {page: 'Page'} }
 
       it { assigns(:page).content.should eq content }
-      it { assigns(:headings).should eq [] }
       it { assigns(:parsed_content).should eq html_content }
       it { response.should render_template(:edit) }
     end
@@ -98,7 +94,6 @@ describe MainController do
     before { put :preview, page: 'Page', content: content }
 
     it { assigns(:page).content.should eq content }
-    it { assigns(:headings).should eq [] }
     it { assigns(:parsed_content).should eq html_content }
     it { response.should render_template(:edit) }
   end
