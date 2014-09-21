@@ -12,4 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require underscore-min
+//= require backbone-min
+//= require jquery-nestedToc
+//= require views/table_of_contents
+//= require views/key_shortcuts
+
+$(document).ready(function(){
+  new TableOfContents().render();
+  new KeyShortcuts().render();
+});

@@ -26,16 +26,12 @@
    */
 
   function Toconize(settings) {
-    this.init(settings);
+    this.settings = settings;
   }
 
   Toconize.prototype = {
     _headingsFound: [],
     _children: {},
-
-    init: function(settings) {
-      this.settings = settings;
-    },
 
     call: function() {
       this._generateUniqueIdsForHeadings();
