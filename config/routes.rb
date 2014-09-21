@@ -1,16 +1,16 @@
-Kwik::Application.routes.draw do
+Rails.application.routes.draw do
 
-  match '404' => 'errors#not_found'
-  match '500' => 'errors#server_error'
+  get '404' => 'errors#not_found'
+  get '500' => 'errors#server_error'
 
-  get Kwik::Application.config.ALL_PAGE => 'main#show_all', :page => Kwik::Application.config.ALL_PAGE.dup, :as => :show_all
+  get Rails.application.config.ALL_PAGE => 'main#show_all', :page => Rails.application.config.ALL_PAGE.dup, :as => :show_all
   get ':page' => 'main#show', :as => :show
   get ':page/edit' => 'main#edit', :as => :edit
   put ':page/edit' => 'main#preview', :constraints => lambda { |request| request.params[:commit] == 'Preview' }
   put ':page/edit' => 'main#update'
   delete ':page' => 'main#destroy'
 
-  root :to => 'main#search', :constraints => lambda { |request| request.params[:terms] =~ /\w+/ }
+  root :to => 'main#search', :constraints => lambda { |request| request.params[:terms] =~ /\w+/ }, :as => :search
   root :to => 'main#show'
 
 end

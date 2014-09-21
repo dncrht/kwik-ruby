@@ -1,14 +1,14 @@
 <ul class="breadcrumb">
-  <% if @page.name != Kwik::Application.config.MAIN_PAGE %>
+  <% if @page.name != Rails.application.config.MAIN_PAGE %>
     <li>
       <%= link_to '« Main page', root_path, :accesskey => 'q', :title => 'Back to main page of this wiki' %>
-      <% if @page.name != Kwik::Application.config.ALL_PAGE %>
+      <% if @page.name != Rails.application.config.ALL_PAGE %>
         <span class="divider">/</span>
       <% end %>
     </li>
   <% end %>
 
-  <% if @page.name != Kwik::Application.config.ALL_PAGE %>
+  <% if @page.name != Rails.application.config.ALL_PAGE %>
     <li>
       <%= link_to 'All pages', show_all_path, :accesskey => 'q', :title => 'Lists all pages this wiki has' %>
     </li>

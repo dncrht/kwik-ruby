@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-Kwik::Application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
+Rails.application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
 
 describe MainController do
 
-  let(:page_file) { "#{Kwik::Application.config.PAGES_PATH}/Page" }
-  let(:main_page_file) { "#{Kwik::Application.config.PAGES_PATH}/#{Kwik::Application.config.MAIN_PAGE}" }
+  let(:page_file) { "#{Rails.application.config.PAGES_PATH}/Page" }
+  let(:main_page_file) { "#{Rails.application.config.PAGES_PATH}/#{Rails.application.config.MAIN_PAGE}" }
   let(:content) { 'unparsed content' }
   let(:html_content) { "\n<p>unparsed content</p>" }
 
@@ -22,7 +22,7 @@ describe MainController do
     context 'Main page' do
       let(:params) { nil }
 
-      it { expect(assigns(:page).to_s).to eq Kwik::Application.config.MAIN_PAGE }
+      it { expect(assigns(:page).to_s).to eq Rails.application.config.MAIN_PAGE }
       it { expect(assigns(:page).title).to eq 'Main page' }
       it { expect(assigns(:page).content).to eq 'unparsed main content' }
       it { expect(assigns(:parsed_content)).to eq "\n<p>unparsed main content</p>" }
@@ -60,7 +60,7 @@ describe MainController do
   end
 
   describe '#show_all' do
-    before { get :show_all, page: Kwik::Application.config.ALL_PAGE }
+    before { get :show_all, page: Rails.application.config.ALL_PAGE }
 
     it { expect(assigns(:all_pages)).to eq ['Page'] }
     it { expect(response).to render_template(:show_all) }
@@ -70,7 +70,7 @@ describe MainController do
     before { get :edit, params }
 
     context 'not allowed to edit All' do
-      let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
+      let(:params) { {page: Rails.application.config.ALL_PAGE} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
@@ -84,7 +84,7 @@ describe MainController do
     end
 
     context 'not allowed to update All' do
-      let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
+      let(:params) { {page: Rails.application.config.ALL_PAGE} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
@@ -108,7 +108,7 @@ describe MainController do
     before { delete :destroy, params }
 
     context 'not allowed the deletion of the Main page' do
-      let(:params) { {page: Kwik::Application.config.MAIN_PAGE} }
+      let(:params) { {page: Rails.application.config.MAIN_PAGE} }
 
       it { expect(response).to redirect_to(root_path) }
     end
@@ -147,7 +147,7 @@ describe MainController do
     end
 
     it 'rejects access to show_all' do
-      get :show_all, page: Kwik::Application.config.ALL_PAGE
+      get :show_all, page: Rails.application.config.ALL_PAGE
       expect(response.status).to eq 401
     end
 

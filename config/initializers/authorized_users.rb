@@ -1,3 +1,3 @@
-Kwik::Application.config.AUTHORIZED_USERS = {
+Rails.application.config.AUTHORIZED_USERS = {
   'user' => 'password'
 }

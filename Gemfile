@@ -1,21 +1,17 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '4.1.4'
 
 gem 'wikicloth'
 gem 'kramdown'
 
-group :assets do
-  gem 'sass-rails', '~> 3.2.3'
-  gem 'therubyracer', :platforms => :ruby
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails', '~> 4.0'
+gem 'therubyracer', :platforms => :ruby
+gem 'uglifier', '~> 1.3'
 
-gem 'bootstrap-sass', '~> 2.3.1.0'
+gem 'bootstrap-sass', '~> 2.3'
 
 gem 'jquery-rails'
-
-gem 'thin'
 
 group :development, :test do
   gem 'pry'
