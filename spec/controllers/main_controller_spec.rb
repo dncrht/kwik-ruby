@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 Kwik::Application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
 
@@ -22,48 +22,48 @@ describe MainController do
     context 'Main page' do
       let(:params) { nil }
 
-      it { assigns(:page).to_s.should eq Kwik::Application.config.MAIN_PAGE }
-      it { assigns(:page).title.should eq 'Main page' }
-      it { assigns(:page).content.should eq 'unparsed main content' }
-      it { assigns(:parsed_content).should eq "\n<p>unparsed main content</p>" }
-      it { response.should render_template(:show) }
+      it { expect(assigns(:page).to_s).to eq Kwik::Application.config.MAIN_PAGE }
+      it { expect(assigns(:page).title).to eq 'Main page' }
+      it { expect(assigns(:page).content).to eq 'unparsed main content' }
+      it { expect(assigns(:parsed_content)).to eq "\n<p>unparsed main content</p>" }
+      it { expect(response).to render_template(:show) }
     end
 
     context 'any Page' do
       let(:params) { {page: 'Page'} }
 
-      it { assigns(:page).to_s.should eq 'Page' }
-      it { assigns(:page).title.should eq 'Page' }
-      it { assigns(:page).content.should eq content }
-      it { assigns(:parsed_content).should eq html_content }
-      it { response.should render_template(:show) }
+      it { expect(assigns(:page).to_s).to eq 'Page' }
+      it { expect(assigns(:page).title).to eq 'Page' }
+      it { expect(assigns(:page).content).to eq content }
+      it { expect(assigns(:parsed_content)).to eq html_content }
+      it { expect(response).to render_template(:show) }
     end
 
     context 'a Page with spaces' do
       let(:params) { {page: 'Page with spaces'} }
 
-      it { assigns(:page).to_s.should eq 'Page_with_spaces' }
-      it { assigns(:page).title.should eq 'Page with spaces' }
-      it { response.should render_template(:show) }
+      it { expect(assigns(:page).to_s).to eq 'Page_with_spaces' }
+      it { expect(assigns(:page).title).to eq 'Page with spaces' }
+      it { expect(response).to render_template(:show) }
     end
 
     context 'an unexisting page' do
       let(:params) { {page: 'unexisting'} }
 
-      it { assigns(:terms).should eq 'unexisting' }
-      it { assigns(:page).to_s.should eq 'unexisting' }
-      it { assigns(:page).title.should eq 'unexisting' }
-      it { assigns(:page).content.should eq "Page doesn't exist. Click on the button above to create it." }
-      it { assigns(:parsed_content).should eq "\n<p>Page doesn't exist. Click on the button above to create it.</p>" }
-      it { response.should render_template(:show) }
+      it { expect(assigns(:terms)).to eq 'unexisting' }
+      it { expect(assigns(:page).to_s).to eq 'unexisting' }
+      it { expect(assigns(:page).title).to eq 'unexisting' }
+      it { expect(assigns(:page).content).to eq "Page doesn't exist. Click on the button above to create it." }
+      it { expect(assigns(:parsed_content)).to eq "\n<p>Page doesn't exist. Click on the button above to create it.</p>" }
+      it { expect(response).to render_template(:show) }
     end
   end
 
   describe '#show_all' do
     before { get :show_all, page: Kwik::Application.config.ALL_PAGE }
 
-    it { assigns(:all_pages).should eq ['Page'] }
-    it { response.should render_template(:show_all) }
+    it { expect(assigns(:all_pages)).to eq ['Page'] }
+    it { expect(response).to render_template(:show_all) }
   end
 
   describe '#edit' do
@@ -72,36 +72,36 @@ describe MainController do
     context 'not allowed to edit All' do
       let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
 
-      it { response.should redirect_to(show_all_path) }
+      it { expect(response).to redirect_to(show_all_path) }
     end
 
     context 'opening the page for edition' do
       let(:params) { {page: 'Page'} }
 
-      it { assigns(:page).content.should eq content }
-      it { assigns(:parsed_content).should eq html_content }
-      it { response.should render_template(:edit) }
+      it { expect(assigns(:page).content).to eq content }
+      it { expect(assigns(:parsed_content)).to eq html_content }
+      it { expect(response).to render_template(:edit) }
     end
 
     context 'not allowed to update All' do
       let(:params) { {page: Kwik::Application.config.ALL_PAGE} }
 
-      it { response.should redirect_to(show_all_path) }
+      it { expect(response).to redirect_to(show_all_path) }
     end
   end
 
   describe '#preview' do
     before { put :preview, page: 'Page', content: content }
 
-    it { assigns(:page).content.should eq content }
-    it { assigns(:parsed_content).should eq html_content }
-    it { response.should render_template(:edit) }
+    it { expect(assigns(:page).content).to eq content }
+    it { expect(assigns(:parsed_content)).to eq html_content }
+    it { expect(response).to render_template(:edit) }
   end
 
   describe '#update' do
     before { put :update, page: 'Page', content: content }
 
-    it { response.should redirect_to(show_path('Page')) }
+    it { expect(response).to redirect_to(show_path('Page')) }
   end
 
   describe '#delete' do
@@ -110,13 +110,13 @@ describe MainController do
     context 'not allowed the deletion of the Main page' do
       let(:params) { {page: Kwik::Application.config.MAIN_PAGE} }
 
-      it { response.should redirect_to(root_path) }
+      it { expect(response).to redirect_to(root_path) }
     end
 
     context 'delete a page' do
       let(:params) { {page: 'Page'} }
 
-      it { response.should redirect_to(root_path) }
+      it { expect(response).to redirect_to(root_path) }
     end
   end
 
@@ -126,54 +126,54 @@ describe MainController do
     context 'search for terms' do
       let(:params) { {terms: 'content'} }
 
-      it { assigns(:terms).should eq 'content' }
-      it { assigns(:page).title.should eq 'Main page' }
-      it { response.should render_template(:search) }
+      it { expect(assigns(:terms)).to eq 'content' }
+      it { expect(assigns(:page).title).to eq 'Main page' }
+      it { expect(response).to render_template(:search) }
     end
 
     context 'open a new page for creation' do
       let(:params) { {terms: 'content', commit: 'Create'} }
 
-      it { response.should redirect_to(edit_path('content')) }
+      it { expect(response).to redirect_to(edit_path('content')) }
     end
   end
 
   describe '#basic_auth' do
     before { request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'user', '' }
 
-    it 'should reject access to show' do
+    it 'rejects access to show' do
       get :show, page: 'Page'
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to show_all' do
+    it 'rejects access to show_all' do
       get :show_all, page: Kwik::Application.config.ALL_PAGE
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to edit' do
+    it 'rejects access to edit' do
       get :edit, page: 'Page'
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to preview' do
+    it 'rejects access to preview' do
       put :preview, page: 'Page'
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to update' do
+    it 'rejects access to update' do
       put :update, page: 'Page'
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to destroy' do
+    it 'rejects access to destroy' do
       delete :destroy, page: 'Page'
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
 
-    it 'should reject access to search' do
+    it 'rejects access to search' do
       get :search
-      response.status.should eq 401
+      expect(response.status).to eq 401
     end
   end
 end
