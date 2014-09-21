@@ -1,10 +1,10 @@
 <%= form_tag edit_path(@page), :method => :put do %>
   <div class="row-fluid">
-    <div class="span3" id="panel">
+    <div class="span3 js-sidepanel">
 
       <%= render 'breadcrumbs' %>
 
-      <div class="well clearfix">
+      <div class="breadcrumb">
         <div class="btn-group">
           <%= submit_tag 'Save', :class => 'btn btn-primary btn-small js-save', :accesskey => 's', :title => 'Saves changes to this page [Ctrl+S]' %>
           <%= submit_tag 'Preview', :class => 'btn btn-small', :accesskey => 'p', :title => 'Preview page changes instead of saving [Ctrl+P]' %>
@@ -15,11 +15,11 @@
         </div>
       </div>
 
-      <div id="jumpers" class="breadcrumb"></div>
+      <div class="toc breadcrumb js-toc"></div>
 
     </div>
 
-    <div class="span9 pull-right">
+    <div class="maincontent span9 pull-right js-maincontent">
 
       <textarea name="content" rows="25" class="prettyprint"><%= @page.content %></textarea>
 

@@ -1,14 +1,14 @@
 TableOfContents = Backbone.View.extend({
   render: function(){
-    $('#jumpers').nestedToc({container: '.span9', ignoreH: 1});
+    $('.js-toc').nestedToc({container: '.js-maincontent', ignoreH: 1});
 
-    if ($('#jumpers').html() == '') {
-      $('#jumpers').remove();
+    if ($('.js-toc').html() == '') {
+      $('.js-toc').remove();
     }
 
-    $('#panel').css('position', 'fixed');
-    if ($('#jumpers').length == 1) {
-      $('#jumpers').css('overflow-y', 'auto');
+    $('.js-sidepanel').css('position', 'fixed');
+    if ($('.js-toc').length == 1) {
+      $('.js-toc').css('overflow-y', 'auto');
 
       $(window).resize(this._resizeToc);
 
@@ -17,6 +17,6 @@ TableOfContents = Backbone.View.extend({
   },
 
   _resizeToc: function(){
-    $('#jumpers').height($(window).height() - $('#jumpers').position().top - 106);
+    $('.js-toc').height($(window).height() - $('.js-toc').position().top - 106);
   }
 });
