@@ -13,6 +13,8 @@ gem 'bootstrap-sass', '~> 2.3'
 
 gem 'jquery-rails'
 
+gem 'dotenv-rails'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'

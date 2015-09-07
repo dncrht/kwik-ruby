@@ -4,14 +4,12 @@ describe ParseContent do
 
   subject { described_class.new(text) }
 
-  after(:all) { ENV['parser'] = 'mediawiki' }
-
   describe '#call' do
     context 'markdown' do
       let(:text) { '## Title' }
 
       before do
-        ENV['parser'] = 'markdown'
+        ENV['PARSER'] = 'markdown'
       end
 
       it { expect(subject.call).to eq %(<h2 id="title">Title</h2>\n) }
@@ -21,7 +19,7 @@ describe ParseContent do
       let(:text) { '== Title ==' }
 
       before do
-        ENV['parser'] = 'mediawiki'
+        ENV['PARSER'] = 'mediawiki'
       end
 
       it { expect(subject.call).to eq %(\n<h2>Title</h2>\n) }

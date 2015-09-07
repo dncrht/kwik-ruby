@@ -1,5 +1,5 @@
 # Kwik
-Kwik is a wiki engine written in Ruby, MediaWiki compatible,
+Kwik is a wiki engine written in Ruby, Markdown & MediaWiki compatible,
 but without the bloated features.
 
 It's intended to be used as a personal or small organization wiki,
@@ -9,6 +9,24 @@ It uses the filesystem as storage, so there's no need to
 set up a database backend.
 The downside is that it won't run under _Heroku_ or similar cloud platforms.
 
+## Installation
+
+Make sure you have a working `ruby` > 1.9.3 installation, with `bundler`.
+
+```bash
+git clone https://github.com/dncrht/kwik.git
+bundle
+bundle exec rails server -p 4040
+open http://localhost:4040
+```
+
+### Page syntax
+
+By default, Kwik assumes the pages are written using the Markdown syntax.
+If you want to use Mediawiki, create a .env file with this content:
+```
+PARSER=mediawiki
+```
 
 ## Launch the app at boot
 
