@@ -1,7 +1,7 @@
 (function($) {
 
   /*
-   jQuery nestedToc Plugin 0.2
+   jQuery nestedToc Plugin 0.3
    https://github.com/dncrht/nestedToc
 
    Copyright (c) 2014 Daniel Cruz Horts
@@ -30,85 +30,85 @@
   }
 
   Toconize.prototype = {
-    _headingsFound: [],
-    _children: {},
 
     call: function() {
-      this._generateUniqueIdsForHeadings();
-      this._findAndNestHeadings(6);
-      return this._children['root'];
+      var tree = this._sequentialAnalysis();
+      return this._buildList('root', tree);
     },
 
-    // Generate a unique ID for every heading
-    _generateUniqueIdsForHeadings: function() {
-      var headingsFound = [];
-      $(this.settings.container).find('h1, h2, h3, h4, h5, h6').each(function() {
+    // Analyses the document sequentially, mapping the heading sizes
+    // into a hierarchical tree
+    _sequentialAnalysis: function() {
+      var headingsNameHistory = ['root']; // heading names, to avoid naming collision when creating unique ids
+      var tree = {root: []} // initialises the 'tree': a list of nodes and its subnodes
+      var parentStack = ['root']; // a stack of parent nodes, to know which parent stores which child
+      previous_heading_level = -1;
+      $(this.settings.container).find('h1, h2, h3, h4, h5, h6').each(function(index, element) {
 
-        var id = $(this).html().replace(/ /g, '-');
+        var id = $(element).html().replace(/[^\w]/g, '-');
 
-        if (headingsFound.indexOf(id) != -1) { // dupe, let's make it unique by adding a random number
+        if (headingsNameHistory.indexOf(id) != -1) { // dupe heading name
           var rand = parseInt(Math.random() * 100);
-          id += '-' + rand;
+          id += '-' + rand; // let's make it unique by adding a random number
         }
-        headingsFound.push(id);
-        $(this).attr('id', id);
+        headingsNameHistory.push(id); // keep track to guarantee uniqueness
+        $(this).attr('id', id); // persist unique identifier back to the tag
+
+        current_heading_level = parseInt($(element).get(0).tagName.replace(/[^\d]+/, ''));
+        if (previous_heading_level == -1) { // automatically determine previous level on first loop
+          previous_heading_level = current_heading_level - 1;
+        }
+
+        tree[id] = []; // initialize new potential parent node
+        if (current_heading_level > previous_heading_level) {
+          if ((current_heading_level - previous_heading_level) > 1) {
+            throw id;
+          }
+          tree[parentStack[0]].push(id); // add node to parent
+          parentStack.unshift(id);
+        } else if (current_heading_level < previous_heading_level) {
+          for (var i = 0; i < (previous_heading_level - current_heading_level); i++) {
+            parentStack.shift();
+          }
+          tree[parentStack[1]].push(id); // add node to sibling
+          parentStack[0] = id;
+        } else { // previous_heading_level == current_heading_level
+          tree[parentStack[1]].push(id); // add node to sibling
+          parentStack[0] = id; // consider this as the new parent
+        }
+
+        previous_heading_level = current_heading_level;
       });
+
+      return tree;
     },
 
-    // Find all the elements for a certain level
-    _findAndNestHeadings: function(level) {
-      if (level == this.settings.ignoreH) {
-        return; // we've reached the topmost level
+    // Builds a nested structure of ordered lists, recursively
+    _buildList: function(branch, tree) {
+      var output = '';
+      if (tree[branch].length > 0) {
+        output += "<ol>\n";
+        for (key in tree[branch]) {
+          var element = tree[branch][key];
+          output += '<li><a href="#' + element + '">' + $('#' + element).html() + '</a>' + this._buildList(element, tree) + "</li>\n";
+        }
+        output += '</ol>';
       }
-
-      var type = 'h' + level;
-      if ($(this.settings.container).find(type).length != 0) { // are there elements in this level?
-        $(this.settings.container).find(type).each(function(_, heading) {
-
-          var siblings = '';
-
-          // find all my siblings
-          $(this.settings.container).find(heading).siblings(type).each(function(_, sibling) {
-            this._headingsFound.push(this._id(sibling));
-            siblings += this._asHtml(sibling);
-          }.bind(this));
-
-          siblings += this._asHtml(heading);
-          siblings = '<ol>' + siblings + '</ol>'; // we're all together in this
-
-          var parent = (level == this.settings.ignoreH + 1) ? 'root' : $(heading).prevAll('h' + (level - 1)).get(0).id;
-          this._children[parent] = siblings; // attach siblings to their parent, up to root level
-        }.bind(this));
-      }
-      this._findAndNestHeadings(level - 1); // dig next level
+      return output;
     },
-
-    // Returns the HTML for a node and its children
-    _asHtml: function(element) {
-      var id = this._id(element);
-      var children = this._children[id] || '';
-      return '<li><a href="#' + id + '">' + $(element).html() + '</a>' + children + '</li>';
-    },
-
-    // Just a convenience method
-    _id: function(element) {
-      return $(element).attr('id');
-    }
   }
 
   $.fn.nestedToc = function(options) {
     var settings = $.extend({
-      container: 'body',
-      ignoreH: 1
+      container: 'body'
     }, options);
 
     var toconize = new Toconize(settings);
 
     try {
       var content = toconize.call();
-    }
-    catch (err) {
-      var content = 'Error: non-linear levels';
+    } catch (id) {
+      var content = 'FATAL ERROR: non-linear levels at ' + id
     }
 
     this.html(content);

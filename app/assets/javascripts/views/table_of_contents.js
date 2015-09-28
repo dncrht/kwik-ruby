@@ -1,6 +1,6 @@
 TableOfContents = Backbone.View.extend({
   render: function(){
-    $('.js-toc').nestedToc({container: '.js-maincontent', ignoreH: 1});
+    $('.js-toc').nestedToc({container: '.js-maincontent'});
 
     if ($('.js-toc').html() == '') {
       $('.js-toc').remove();
