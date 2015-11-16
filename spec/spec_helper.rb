@@ -83,3 +83,5 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+Dir.mkdir 'spec/pages' unless Dir.exist? 'spec/pages'

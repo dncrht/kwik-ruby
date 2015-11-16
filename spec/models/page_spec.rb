@@ -36,7 +36,7 @@ describe Page do
   it "loads a page that doesn't exist in edit mode" do
     File.delete(page_file)
     page.load(:for_edit)
-    expect(page.content).to eq 'Start here to write the page content.'
+    expect(page.content).to be_nil
   end
 
   it 'returns all pages' do
