@@ -30,7 +30,7 @@ describe Page do
   it "loads a page that doesn't exists in show mode" do
     File.delete(page_file)
     page.load(:for_show)
-    expect(page.content).to eq "Page doesn't exist. Click on the button above to create it."
+    expect(page.content).to eq "Page does not exist. Click on the button above to create it."
   end
 
   it "loads a page that doesn't exist in edit mode" do

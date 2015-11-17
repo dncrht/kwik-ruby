@@ -27,7 +27,7 @@ class Page
       file.close
     else
       if show_or_edit == :for_show
-        self.content = "Page doesn't exist. Click on the button above to create it."
+        self.content = "Page does not exist. Click on the button above to create it."
       else
         self.content = 'Start here to write the page content.'
       end

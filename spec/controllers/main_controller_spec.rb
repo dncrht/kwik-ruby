@@ -7,7 +7,7 @@ describe MainController do
   let(:page_file) { "#{Rails.application.config.PAGES_PATH}/Page" }
   let(:main_page_file) { "#{Rails.application.config.PAGES_PATH}/#{Rails.application.config.MAIN_PAGE}" }
   let(:content) { 'unparsed content' }
-  let(:html_content) { "<p>unparsed content</p>\n" }
+  let(:html_content) { "<p>unparsed content</p>" }
 
   before do
     File.open(page_file, 'w') { |f| f.write content } unless File.exist? page_file
@@ -25,7 +25,7 @@ describe MainController do
       it { expect(assigns(:page).to_s).to eq Rails.application.config.MAIN_PAGE }
       it { expect(assigns(:page).title).to eq 'Main page' }
       it { expect(assigns(:page).content).to eq 'unparsed main content' }
-      it { expect(assigns(:parsed_content)).to eq "<p>unparsed main content</p>\n" }
+      it { expect(assigns(:parsed_content).strip).to eq "<p>unparsed main content</p>" }
       it { expect(response).to render_template(:show) }
     end
 
@@ -35,7 +35,7 @@ describe MainController do
       it { expect(assigns(:page).to_s).to eq 'Page' }
       it { expect(assigns(:page).title).to eq 'Page' }
       it { expect(assigns(:page).content).to eq content }
-      it { expect(assigns(:parsed_content)).to eq html_content }
+      it { expect(assigns(:parsed_content).strip).to eq html_content }
       it { expect(response).to render_template(:show) }
     end
 
@@ -53,8 +53,8 @@ describe MainController do
       it { expect(assigns(:terms)).to eq 'unexisting' }
       it { expect(assigns(:page).to_s).to eq 'unexisting' }
       it { expect(assigns(:page).title).to eq 'unexisting' }
-      it { expect(assigns(:page).content).to eq "Page doesn't exist. Click on the button above to create it." }
-      it { expect(assigns(:parsed_content)).to eq "<p>Page doesn’t exist. Click on the button above to create it.</p>\n" }
+      it { expect(assigns(:page).content).to eq "Page does not exist. Click on the button above to create it." }
+      it { expect(assigns(:parsed_content).strip).to eq "<p>Page does not exist. Click on the button above to create it.</p>" }
       it { expect(response).to render_template(:show) }
     end
   end
@@ -79,7 +79,7 @@ describe MainController do
       let(:params) { {page: 'Page'} }
 
       it { expect(assigns(:page).content).to eq content }
-      it { expect(assigns(:parsed_content)).to eq html_content }
+      it { expect(assigns(:parsed_content).strip).to eq html_content }
       it { expect(response).to render_template(:edit) }
     end
 
@@ -94,7 +94,7 @@ describe MainController do
     before { put :preview, page: 'Page', content: content }
 
     it { expect(assigns(:page).content).to eq content }
-    it { expect(assigns(:parsed_content)).to eq html_content }
+    it { expect(assigns(:parsed_content).strip).to eq html_content }
     it { expect(response).to render_template(:edit) }
   end
 
