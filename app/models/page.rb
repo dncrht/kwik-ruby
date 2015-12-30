@@ -3,6 +3,8 @@ class Page
   attr_reader :name, :title
   attr_accessor :content
 
+  NO_PAGE_MESSAGE = 'Page does not exist. Click on the button above to create it.'
+
   def initialize(name)
     @name = name.gsub ' ', '_'
     @title = name.gsub '_', ' '
@@ -25,11 +27,10 @@ class Page
       file = File.open path, 'r'
       self.content = file.read
       file.close
-    else
-      if show_or_edit == :for_show
-        self.content = "Page does not exist. Click on the button above to create it."
-      end
+      return
     end
+
+    self.content = (show_or_edit == :for_show) ? NO_PAGE_MESSAGE : ''
   end
 
   def save

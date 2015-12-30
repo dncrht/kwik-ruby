@@ -75,6 +75,14 @@ describe MainController do
       it { expect(response).to redirect_to(show_all_path) }
     end
 
+    context 'opening a missing page' do
+      let(:params) { {page: 'Missing'} }
+
+      it { expect(assigns(:page).content).to eq '' }
+      it { expect(assigns(:parsed_content).strip).to eq '' }
+      it { expect(response).to render_template(:edit) }
+    end
+
     context 'opening the page for edition' do
       let(:params) { {page: 'Page'} }
 
