@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '4.1.4'
 
+gem 'puma'
+
 gem 'wikicloth'
 gem 'kramdown'
 

@@ -16,8 +16,8 @@ Make sure you have a working `ruby` > 1.9.3 installation, with `bundler`.
 ```bash
 git clone https://github.com/dncrht/kwik.git
 bundle
-bundle exec rails server -p 4040
-open http://localhost:4040
+bundle exec rails server
+open http://localhost:3000
 ```
 
 ### Page syntax
@@ -32,27 +32,11 @@ PARSER=mediawiki
 
 ### Mac OS X
 
-Make sure the app is able to run:
+Install [puma-dev](https://github.com/puma/puma-dev).
 
+Symlink your kwik installation directory:
 ```bash
-bundle exec rails server -p 4040
-open http://localhost:4040
+ln -s /Users/your_user/path/to/kwik .puma-dev
 ```
 
-Copy system/kwik.plist to ~/Library/LaunchAgents
-
-```bash
-cp system/kwik.plist ~/Library/LaunchAgents
-```
-
-Modify the file `~/Library/LaunchAgents/kwik.plist` to adjust some paths:
-- /Users/your_user/.rbenv/shims/bundle: change your_user
-- /Users/path/to/kwik: it should be the path to the kwik directory
-
-All good! Launch the app now:
-
-```bash
-launchctl load ~/Library/LaunchAgents/kwik.plist
-```
-
-…or reboot your system!
+Now point your browser to [http://kwik.dev/](http://kwik.dev/)!
