@@ -15,8 +15,7 @@
 //= require underscore-min
 //= require backbone-min
 //= require jquery-nestedToc
-//= require views/table_of_contents
-//= require views/key_shortcuts
+//= require_tree ./views
 
 $(document).ready(function(){
   new TableOfContents().render();
