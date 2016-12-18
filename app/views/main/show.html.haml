@@ -1,0 +1,12 @@
+.row-fluid
+  .span3.js-sidepanel
+    = render 'breadcrumbs'
+
+    - if @page.exist?
+      .breadcrumb
+        = link_to 'Edit page', edit_path(@page), class: 'btn btn-primary', accesskey: 'e', title: 'Changes this page to edition mode'
+
+    .toc.breadcrumb.js-toc
+
+  .maincontent.span9.pull-right.js-maincontent
+    = @parsed_content.html_safe

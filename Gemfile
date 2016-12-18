@@ -14,6 +14,8 @@ gem 'bootstrap-sass', '~> 2.3'
 
 gem 'jquery-rails'
 
+gem 'hamlit'
+
 gem 'dotenv-rails'
 
 group :development, :test do

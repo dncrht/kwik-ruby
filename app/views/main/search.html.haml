@@ -1,0 +1,23 @@
+.row-fluid
+  #panel.span3
+    = render 'breadcrumbs'
+
+  .span9.pull-right
+    %h2 Search results
+
+    %h3 Page name matches
+    - if @search_names.present?
+      %ul
+        - @search_names.each do |page_name|
+          %li= link_to page_name.gsub('_', ' '), show_path(page_name)
+    - else
+      Nothing found... Click on the Create button to create a page named #{params[:terms]}.
+
+    %h3 Page content matches
+    - @search_content.each do |page_name, matching_lines|
+      %ul
+        %li= link_to page_name, show_path(page_name)
+      - if matching_lines.present?
+        %pre
+          - matching_lines.each do |line|
+            = line

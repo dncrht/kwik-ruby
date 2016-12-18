@@ -41,6 +41,10 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     expression_parser (0.9.0)
+    hamlit (2.7.5)
+      temple (~> 0.7.6)
+      thor
+      tilt
     hike (1.2.3)
     htmlentities (4.3.4)
     i18n (0.7.0)
@@ -122,6 +126,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    temple (0.7.7)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
@@ -151,6 +156,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-sass (~> 2.3)
   dotenv-rails
+  hamlit
   jquery-rails
   kramdown
   pry
