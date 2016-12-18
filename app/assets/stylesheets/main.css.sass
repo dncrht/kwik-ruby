@@ -11,7 +11,7 @@ $navbarBrandColor: #000
 
 body
   padding-top: 60px
-  background: url(<%= image_path 'body_bg.png' %>) repeat-y
+  background: image-url('body_bg.png') repeat-y
 
 .navbar .brand
   font-weight: bold
@@ -25,7 +25,8 @@ form
 
 .toc
   margin: 20px 0 0 0
-  ol // Taken from https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Counters
+  // Taken from https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Counters
+  ol
     margin: 0
     counter-reset: section
     list-style-type: none

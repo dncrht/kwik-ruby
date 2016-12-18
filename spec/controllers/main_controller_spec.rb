@@ -30,7 +30,7 @@ describe MainController do
     end
 
     context 'any Page' do
-      let(:params) { {page: 'Page'} }
+      let(:params) { {params: {page: 'Page'}} }
 
       it { expect(assigns(:page).to_s).to eq 'Page' }
       it { expect(assigns(:page).title).to eq 'Page' }
@@ -40,7 +40,7 @@ describe MainController do
     end
 
     context 'a Page with spaces' do
-      let(:params) { {page: 'Page with spaces'} }
+      let(:params) { {params: {page: 'Page with spaces'}} }
 
       it { expect(assigns(:page).to_s).to eq 'Page_with_spaces' }
       it { expect(assigns(:page).title).to eq 'Page with spaces' }
@@ -48,7 +48,7 @@ describe MainController do
     end
 
     context 'an unexisting page' do
-      let(:params) { {page: 'unexisting'} }
+      let(:params) { {params: {page: 'unexisting'}} }
 
       it { expect(assigns(:terms)).to eq 'unexisting' }
       it { expect(assigns(:page).to_s).to eq 'unexisting' }
@@ -60,7 +60,7 @@ describe MainController do
   end
 
   describe '#show_all' do
-    before { get :show_all, page: Rails.application.config.ALL_PAGE }
+    before { get :show_all, params: {page: Rails.application.config.ALL_PAGE} }
 
     it { expect(assigns(:all_pages)).to eq ['Page'] }
     it { expect(response).to render_template(:show_all) }
@@ -70,13 +70,13 @@ describe MainController do
     before { get :edit, params }
 
     context 'not allowed to edit All' do
-      let(:params) { {page: Rails.application.config.ALL_PAGE} }
+      let(:params) { {params: {page: Rails.application.config.ALL_PAGE}} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
 
     context 'opening a missing page' do
-      let(:params) { {page: 'Missing'} }
+      let(:params) { {params: {page: 'Missing'}} }
 
       it { expect(assigns(:page).content).to eq '' }
       it { expect(assigns(:parsed_content).strip).to eq '' }
@@ -84,7 +84,7 @@ describe MainController do
     end
 
     context 'opening the page for edition' do
-      let(:params) { {page: 'Page'} }
+      let(:params) { {params: {page: 'Page'}} }
 
       it { expect(assigns(:page).content).to eq content }
       it { expect(assigns(:parsed_content).strip).to eq html_content }
@@ -92,14 +92,14 @@ describe MainController do
     end
 
     context 'not allowed to update All' do
-      let(:params) { {page: Rails.application.config.ALL_PAGE} }
+      let(:params) { {params: {page: Rails.application.config.ALL_PAGE}} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
   end
 
   describe '#preview' do
-    before { put :preview, page: 'Page', content: content }
+    before { put :preview, params: {page: 'Page', content: content} }
 
     it { expect(assigns(:page).content).to eq content }
     it { expect(assigns(:parsed_content).strip).to eq html_content }
@@ -107,7 +107,7 @@ describe MainController do
   end
 
   describe '#update' do
-    before { put :update, page: 'Page', content: content }
+    before { put :update, params: {page: 'Page', content: content} }
 
     it { expect(response).to redirect_to(show_path('Page')) }
   end
@@ -116,13 +116,13 @@ describe MainController do
     before { delete :destroy, params }
 
     context 'not allowed the deletion of the Main page' do
-      let(:params) { {page: Rails.application.config.MAIN_PAGE} }
+      let(:params) { {params: {page: Rails.application.config.MAIN_PAGE}} }
 
       it { expect(response).to redirect_to(root_path) }
     end
 
     context 'delete a page' do
-      let(:params) { {page: 'Page'} }
+      let(:params) { {params: {page: 'Page'}} }
 
       it { expect(response).to redirect_to(root_path) }
     end
@@ -132,7 +132,7 @@ describe MainController do
     before { get :search, params }
 
     context 'search for terms' do
-      let(:params) { {terms: 'content'} }
+      let(:params) { {params: {terms: 'content'}} }
 
       it { expect(assigns(:terms)).to eq 'content' }
       it { expect(assigns(:page).title).to eq 'Main page' }
@@ -140,7 +140,7 @@ describe MainController do
     end
 
     context 'open a new page for creation' do
-      let(:params) { {terms: 'content', commit: 'Create'} }
+      let(:params) { {params: {terms: 'content', commit: 'Create'}} }
 
       it { expect(response).to redirect_to(edit_path('content')) }
     end
@@ -150,32 +150,32 @@ describe MainController do
     before { request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'user', '' }
 
     it 'rejects access to show' do
-      get :show, page: 'Page'
+      get :show, params: {page: 'Page'}
       expect(response.status).to eq 401
     end
 
     it 'rejects access to show_all' do
-      get :show_all, page: Rails.application.config.ALL_PAGE
+      get :show_all, params: {page: Rails.application.config.ALL_PAGE}
       expect(response.status).to eq 401
     end
 
     it 'rejects access to edit' do
-      get :edit, page: 'Page'
+      get :edit, params: {page: 'Page'}
       expect(response.status).to eq 401
     end
 
     it 'rejects access to preview' do
-      put :preview, page: 'Page'
+      put :preview, params: {page: 'Page'}
       expect(response.status).to eq 401
     end
 
     it 'rejects access to update' do
-      put :update, page: 'Page'
+      put :update, params: {page: 'Page'}
       expect(response.status).to eq 401
     end
 
     it 'rejects access to destroy' do
-      delete :destroy, page: 'Page'
+      delete :destroy, params: {page: 'Page'}
       expect(response.status).to eq 401
     end
 

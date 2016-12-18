@@ -1,13 +1,13 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.1.4'
+gem 'rails', '5.0.0.1'
 
 gem 'puma'
 
 gem 'wikicloth'
 gem 'kramdown'
 
-gem 'sass-rails', '~> 4.0'
+gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '~> 1.3'
 
 gem 'bootstrap-sass', '~> 2.3'
@@ -18,12 +18,15 @@ gem 'hamlit'
 
 gem 'dotenv-rails'
 
+gem 'pry'
+gem 'pry-rails'
+
 group :development, :test do
-  gem 'pry'
-  gem 'pry-rails'
   gem 'pry-byebug'
+  gem 'rspec-rails', '~> 3.1'
+  gem 'rails-controller-testing'
 end
 
-group :test do
-  gem 'rspec-rails', '~> 3.1'
+group :development do
+  gem 'web-console'
 end
