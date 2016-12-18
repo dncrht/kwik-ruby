@@ -1,7 +1,7 @@
 class MainController < ApplicationController
 
-  before_filter :basic_auth, :set_page_by_name
-  before_filter :cannot_edit_All, only: %i(edit update)
+  before_action :basic_auth, :set_page_by_name
+  before_action :cannot_edit_All, only: %i(edit update)
 
   def show
     @page.load :for_show
