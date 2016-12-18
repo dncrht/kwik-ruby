@@ -13,6 +13,7 @@ gem 'uglifier', '~> 1.3'
 gem 'bootstrap-sass', '~> 2.3'
 
 gem 'jquery-rails'
+gem 'turbolinks'
 
 gem 'hamlit'
 
