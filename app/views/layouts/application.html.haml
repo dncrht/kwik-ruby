@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    %meta(content="text/html; charset=UTF-8" http-equiv="Content-Type")
+    %title= @page.title
+    %meta(charset="UTF-8")
+    = stylesheet_link_tag 'application', media: 'all'
+
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        = form_tag root_path, method: :get do
+          .container-fluid
+            = link_to @page.title, show_path(@page), class: 'brand'
+            %ul.nav.pull-right
+              %li.divider-vertical
+              %li.navbar-form
+                = text_field_tag :terms, @terms, accesskey: 'f', class: 'js-terms', title: 'Search or create a term [Ctrl+K]'
+                = submit_tag 'Search', class: 'btn btn-primary', title: 'Searches for the term in existing pages'
+                = submit_tag 'Create', id: 'create_btn', class: 'btn', title: 'Creates a page with the specified term, or leads to the page if already exists'
+
+    .container-fluid
+      = yield
+
+    = javascript_include_tag 'application'

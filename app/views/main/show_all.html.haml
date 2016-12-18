@@ -1,0 +1,10 @@
+.row-fluid
+  #panel.span3
+    = render 'breadcrumbs'
+
+  .span9.pull-right
+    %h2 All pages
+
+    %ul
+      - @all_pages.each do |page_name|
+        %li= link_to page_name.gsub('_', ' '), show_path(page_name)

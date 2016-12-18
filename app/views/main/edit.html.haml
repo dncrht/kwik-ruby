@@ -1,0 +1,18 @@
+= form_tag edit_path(@page), :method => :put do
+  .row-fluid
+    .span3.js-sidepanel
+      = render 'breadcrumbs'
+
+      .breadcrumb
+        .btn-group
+          = submit_tag 'Save', class: 'btn btn-primary btn-small js-save', accesskey: 's', title: 'Saves changes to this page [Ctrl+S]'
+          = submit_tag 'Preview', class: 'btn btn-small', accesskey: 'p', title: 'Preview page changes instead of saving [Ctrl+P]'
+          = link_to 'Cancel', show_path(@page), class: 'btn btn-small', title: 'Cancel page edition'
+        .pull-right
+          = link_to 'Delete', show_path(@page), class: 'btn btn-danger btn-small', title: 'Deletes current page from disk, forever', confirm: 'This will delete the current page. Are you sure?', method: :delete
+
+      .toc.breadcrumb.js-toc
+
+    .maincontent.span9.pull-right.js-maincontent
+      %textarea.prettyprint{:name => "content", :placeholder => "Start here to write the page content.", :rows => "25"}= @page.content
+      = @parsed_content.html_safe
