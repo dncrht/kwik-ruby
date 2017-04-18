@@ -1,17 +1,14 @@
 require 'rails_helper'
 
-Rails.application.config.PAGES_PATH = "#{Rails.root}/spec/pages"
-
 describe MainController do
 
-  let(:page_file) { "#{Rails.application.config.PAGES_PATH}/Page" }
-  let(:main_page_file) { "#{Rails.application.config.PAGES_PATH}/#{Rails.application.config.MAIN_PAGE}" }
-  let(:content) { 'unparsed content' }
-  let(:html_content) { "<p>unparsed content</p>" }
+  let(:test_page) { 'XyzTestPage' }
+  let(:content) { 'unparsed xyztest content' }
+  let(:html_content) { "<p>unparsed xyztest content</p>" }
 
   before do
-    File.open(page_file, 'w') { |f| f.write content } unless File.exist? page_file
-    File.open(main_page_file, 'w') { |f| f.write 'unparsed main content' } unless File.exist? main_page_file
+    path = "#{Rails.root}/pages/#{test_page}"
+    File.open(path, 'w') { |f| f.write content } unless File.exist? path
 
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'user', 'password'
   end
@@ -22,18 +19,15 @@ describe MainController do
     context 'Main page' do
       let(:params) { nil }
 
-      it { expect(assigns(:page).to_s).to eq Rails.application.config.MAIN_PAGE }
       it { expect(assigns(:page).title).to eq 'Main page' }
-      it { expect(assigns(:page).content).to eq 'unparsed main content' }
-      it { expect(assigns(:parsed_content).strip).to eq "<p>unparsed main content</p>" }
+      it { expect(assigns(:page).content).to be_present }
       it { expect(response).to render_template(:show) }
     end
 
     context 'any Page' do
-      let(:params) { {params: {page: 'Page'}} }
+      let(:params) { {params: {page: test_page}} }
 
-      it { expect(assigns(:page).to_s).to eq 'Page' }
-      it { expect(assigns(:page).title).to eq 'Page' }
+      it { expect(assigns(:page).title).to eq test_page }
       it { expect(assigns(:page).content).to eq content }
       it { expect(assigns(:parsed_content).strip).to eq html_content }
       it { expect(response).to render_template(:show) }
@@ -42,7 +36,6 @@ describe MainController do
     context 'a Page with spaces' do
       let(:params) { {params: {page: 'Page with spaces'}} }
 
-      it { expect(assigns(:page).to_s).to eq 'Page_with_spaces' }
       it { expect(assigns(:page).title).to eq 'Page with spaces' }
       it { expect(response).to render_template(:show) }
     end
@@ -51,7 +44,6 @@ describe MainController do
       let(:params) { {params: {page: 'unexisting'}} }
 
       it { expect(assigns(:terms)).to eq 'unexisting' }
-      it { expect(assigns(:page).to_s).to eq 'unexisting' }
       it { expect(assigns(:page).title).to eq 'unexisting' }
       it { expect(assigns(:page).content).to eq "Page does not exist. Click on the button above to create it." }
       it { expect(assigns(:parsed_content).strip).to eq "<p>Page does not exist. Click on the button above to create it.</p>" }
@@ -62,7 +54,7 @@ describe MainController do
   describe '#show_all' do
     before { get :show_all, params: {page: Rails.application.config.ALL_PAGE} }
 
-    it { expect(assigns(:all_pages)).to eq ['Page'] }
+    it { expect(assigns(:all_pages)).to include test_page }
     it { expect(response).to render_template(:show_all) }
   end
 
@@ -84,7 +76,7 @@ describe MainController do
     end
 
     context 'opening the page for edition' do
-      let(:params) { {params: {page: 'Page'}} }
+      let(:params) { {params: {page: test_page}} }
 
       it { expect(assigns(:page).content).to eq content }
       it { expect(assigns(:parsed_content).strip).to eq html_content }
@@ -99,7 +91,7 @@ describe MainController do
   end
 
   describe '#preview' do
-    before { put :preview, params: {page: 'Page', content: content} }
+    before { put :preview, params: {page: test_page, content: content} }
 
     it { expect(assigns(:page).content).to eq content }
     it { expect(assigns(:parsed_content).strip).to eq html_content }
@@ -107,9 +99,9 @@ describe MainController do
   end
 
   describe '#update' do
-    before { put :update, params: {page: 'Page', content: content} }
+    before { put :update, params: {page: test_page, content: content} }
 
-    it { expect(response).to redirect_to(show_path('Page')) }
+    it { expect(response).to redirect_to(show_path(test_page)) }
   end
 
   describe '#delete' do
@@ -122,7 +114,7 @@ describe MainController do
     end
 
     context 'delete a page' do
-      let(:params) { {params: {page: 'Page'}} }
+      let(:params) { {params: {page: test_page}} }
 
       it { expect(response).to redirect_to(root_path) }
     end
@@ -132,9 +124,9 @@ describe MainController do
     before { get :search, params }
 
     context 'search for terms' do
-      let(:params) { {params: {terms: 'content'}} }
+      let(:params) { {params: {terms: 'xyztest'}} }
 
-      it { expect(assigns(:terms)).to eq 'content' }
+      it { expect(assigns(:terms)).to eq 'xyztest' }
       it { expect(assigns(:page).title).to eq 'Main page' }
       it { expect(response).to render_template(:search) }
     end
