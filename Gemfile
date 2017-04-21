@@ -7,6 +7,8 @@ gem 'puma'
 gem 'wikicloth'
 gem 'kramdown'
 
+gem 'sqlite3' # Replace this by your database of choice when using the Database repo
+
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '~> 1.3'
 
