@@ -1,23 +1,24 @@
 class Repo
   class Database
 
+    class Page < ActiveRecord::Base; end
+
     def find_by(model, criteria)
-      entity = db.select_one("SELECT * FROM #{model.name.tableize} WHERE name = '#{criteria[:name]}'")
+      entity = ar_for(model).find_by criteria
       return unless entity
-      model.new(name: criteria[:name], content: entity['content'])
+      model.new(name: entity.name, content: entity.content)
     end
 
     def save(entity)
-      existing_entity = db.select_one("SELECT * FROM #{entity.class.name.tableize} WHERE name = '#{entity.name}'")
-      if existing_entity
-        db.execute("UPDATE #{entity.class.name.tableize} SET content = '#{entity.content}' WHERE id = '#{existing_entity['id']}'")
-      else
-        db.execute("INSERT INTO #{entity.class.name.tableize}(name, content) VALUES ('#{entity.name}', '#{entity.content}')")
-      end
+      model = ar_for(entity.class)
+      e = model.find_by(name: entity.name) || model.new
+      e.attributes = {name: entity.name, content: entity.content}
+      e.save
     end
 
     def destroy(entity)
-      db.execute("DELETE FROM #{entity.class.name.tableize} WHERE name = '#{entity.name}'")
+      e = ar_for(entity.class).find_by(name: entity.name)
+      e.destroy if e.present? && entity.name != Rails.application.config.MAIN_PAGE
     end
 
     def where(model, criteria)
@@ -25,15 +26,16 @@ class Repo
       content = criteria[:content]
 
       if name.present?
-        return Dir.entries(path_for(model.name.tableize)).sort.map do |file|
-          file if file.downcase.include? name.downcase
+        return ar_for(model).where(name: name).all.map do |entity|
+          entity if entity.name.downcase.include? name.downcase
         end.compact.tap { |search_names| search_names << name if name == Rails.application.config.ALL_PAGE }
       elsif content.present?
         search_content = Hash.new { |h, k| h[k] = [] }
-        results = `cd "#{path_for(model.name.tableize)}"; grep '#{content}' *` #TODO case insensitive search
-        results.split("\n").each do |result|
-          page, matching_line = result.split(':', 2)
-          search_content[page] << matching_line << "\n"
+        ar_for(model).where('content LIKE ?', "%#{content}%").all.each do |entity|
+          entity['content'].split("\n").each do |matching_line|
+            next unless matching_line.include? content
+            search_content[entity.name] << matching_line << "\n"
+          end
         end
         search_content
       else
@@ -42,9 +44,8 @@ class Repo
     end
 
     def all(model)
-      entities = db.select_all("SELECT * FROM #{model.name.tableize}")
-      entities.map do |entity|
-        name = entity['name']
+      ar_for(model).all.map do |entity|
+        name = entity.name
         if name != Rails.application.config.MAIN_PAGE
           name
         end
@@ -53,8 +54,8 @@ class Repo
 
     private
 
-    def db
-      ActiveRecord::Base.connection
+    def ar_for(model)
+      "Repo::Database::#{model.name}".constantize
     end
   end
 end

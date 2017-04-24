@@ -7,9 +7,7 @@ describe MainController do
   let(:html_content) { "<p>unparsed xyztest content</p>" }
 
   before do
-    path = "#{Rails.root}/pages/#{test_page}"
-    File.open(path, 'w') { |f| f.write content } unless File.exist? path
-
+    Repo.create_test_fixtures test_page, content
     request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials 'user', 'password'
   end
 

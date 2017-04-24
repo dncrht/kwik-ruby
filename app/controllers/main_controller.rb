@@ -4,7 +4,7 @@ class MainController < ApplicationController
   before_action :cannot_edit_All, only: %i(edit update)
 
   def show
-    @page = REPO.find_by Page, name: page_name
+    @page = Repo.find_by Page, name: page_name
 
     if @page
       @editable = true
@@ -18,12 +18,12 @@ class MainController < ApplicationController
   end
 
   def show_all
-    @all_pages = REPO.all Page
+    @all_pages = Repo.all Page
     @page = Page.new name: Rails.application.config.ALL_PAGE
   end
 
   def edit
-    @page = REPO.find_by Page, name: page_name
+    @page = Repo.find_by Page, name: page_name
 
     unless @page
       @page = Page.new name: page_name
@@ -42,14 +42,14 @@ class MainController < ApplicationController
   def update
     page = Page.new name: page_name, content: params[:content]
 
-    REPO.save page
+    Repo.save page
     redirect_to show_path(page.name)
   end
 
   def destroy
     page = Page.new name: page_name
 
-    REPO.destroy page
+    Repo.destroy page
     redirect_to root_path
   end
 
@@ -62,9 +62,9 @@ class MainController < ApplicationController
       return
     end
 
-    @search_names = REPO.where Page, name: @terms
+    @search_names = Repo.where Page, name: @terms
 
-    @search_content = REPO.where Page, content: @terms
+    @search_content = Repo.where Page, content: @terms
   end
 
   private
