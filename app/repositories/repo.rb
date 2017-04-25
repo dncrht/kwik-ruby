@@ -34,7 +34,7 @@ class Repo
     private
 
     def implementation
-      repo_implementation = ENV['REPO_IMPLEMENTATION'] || 'database'
+      repo_implementation = ENV['REPO_IMPLEMENTATION'] || 'memory'
       ('Repo::' << repo_implementation.classify).constantize.new
     end
   end
