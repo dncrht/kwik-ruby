@@ -2,9 +2,9 @@
   .span3.js-sidepanel
     = render 'breadcrumbs'
 
-    - if @page.exist?
+    - if @editable
       .breadcrumb
-        = link_to 'Edit page', edit_path(@page), class: 'btn btn-primary', accesskey: 'e', title: 'Changes this page to edition mode'
+        = link_to 'Edit page', edit_path(@page.name), class: 'btn btn-primary', accesskey: 'e', title: 'Changes this page to edition mode'
 
     .toc.breadcrumb.js-toc
 

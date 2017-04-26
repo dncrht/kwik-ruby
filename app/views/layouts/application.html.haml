@@ -11,7 +11,7 @@
       .navbar-inner
         = form_tag root_path, method: :get do
           .container-fluid
-            = link_to @page.title, show_path(@page), class: 'brand'
+            = link_to @page.title, show_path(@page.name), class: 'brand'
             %ul.nav.pull-right
               %li.divider-vertical
               %li.navbar-form

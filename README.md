@@ -5,9 +5,16 @@ but without the bloated features.
 It's intended to be used as a personal or small organization wiki,
 where users are trusted and time is not meant to be spent on maintenance.
 
-It uses the filesystem as storage, so there's no need to
-set up a database backend.
-The downside is that it won't run under _Heroku_ or similar cloud platforms.
+It can be configured to use different storages such as `database` or a `filesystem`.
+By default it's configured to use the filesystem. To change it, create a .env file with this content:
+```
+REPO_IMPLEMENTATION=database
+```
+
+The available storages are:
+- filesystem: useful as a personal-only wiki storage, it lets you use a VCS to keep a history of changes.
+- database: any RDBMS supported by ActiveRecord. sqlite is already set up by default for personal environments but you can use mysql2 or postgres in case you want to run Kwik on Heroku or any other cloud platform. Modify `config/database.yml` to your needs.
+- memory: an ephemeral store that it's deleted once the server restarts. Only useful for development or test.
 
 ## Installation
 

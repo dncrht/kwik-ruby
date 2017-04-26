@@ -5,3 +5,4 @@ log/*.log
 tmp/
 nbproject/
 pages
+database.yml
