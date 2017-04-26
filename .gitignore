@@ -6,3 +6,4 @@ tmp/
 nbproject/
 pages
 database.yml
+*.orig
