@@ -1,7 +1,7 @@
 require_relative 'boot'
 
 require 'action_controller/railtie'
-require 'active_record/railtie'
+require 'active_record/railtie' if ENV['REPO_IMPLEMENTATION'] == 'database'
 require 'sprockets/railtie'
 
 # Require the gems listed in Gemfile, including any gems
