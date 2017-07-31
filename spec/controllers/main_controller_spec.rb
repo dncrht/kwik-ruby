@@ -12,10 +12,10 @@ describe MainController do
   end
 
   describe '#show' do
-    before { get :show, params }
+    before { get :show, params: params }
 
     context 'Main page' do
-      let(:params) { nil }
+      let(:params) { {} }
 
       it { expect(assigns(:page).title).to eq 'Main page' }
       it { expect(assigns(:page).content).to be_present }
@@ -23,7 +23,7 @@ describe MainController do
     end
 
     context 'any Page' do
-      let(:params) { {params: {page: test_page}} }
+      let(:params) { {page: test_page} }
 
       it { expect(assigns(:page).title).to eq test_page }
       it { expect(assigns(:page).content).to eq content }
@@ -32,14 +32,14 @@ describe MainController do
     end
 
     context 'a Page with spaces' do
-      let(:params) { {params: {page: 'Page with spaces'}} }
+      let(:params) { {page: 'Page with spaces'} }
 
       it { expect(assigns(:page).title).to eq 'Page with spaces' }
       it { expect(response).to render_template(:show) }
     end
 
     context 'an unexisting page' do
-      let(:params) { {params: {page: 'unexisting'}} }
+      let(:params) { {page: 'unexisting'} }
 
       it { expect(assigns(:terms)).to eq 'unexisting' }
       it { expect(assigns(:page).title).to eq 'unexisting' }
@@ -57,16 +57,16 @@ describe MainController do
   end
 
   describe '#edit' do
-    before { get :edit, params }
+    before { get :edit, params: params }
 
     context 'not allowed to edit All' do
-      let(:params) { {params: {page: Rails.application.config.ALL_PAGE}} }
+      let(:params) { {page: Rails.application.config.ALL_PAGE} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
 
     context 'opening a missing page' do
-      let(:params) { {params: {page: 'Missing'}} }
+      let(:params) { {page: 'Missing'} }
 
       it { expect(assigns(:page).content).to eq '' }
       it { expect(assigns(:parsed_content).strip).to eq '' }
@@ -74,7 +74,7 @@ describe MainController do
     end
 
     context 'opening the page for edition' do
-      let(:params) { {params: {page: test_page}} }
+      let(:params) { {page: test_page} }
 
       it { expect(assigns(:page).content).to eq content }
       it { expect(assigns(:parsed_content).strip).to eq html_content }
@@ -82,7 +82,7 @@ describe MainController do
     end
 
     context 'not allowed to update All' do
-      let(:params) { {params: {page: Rails.application.config.ALL_PAGE}} }
+      let(:params) { {page: Rails.application.config.ALL_PAGE} }
 
       it { expect(response).to redirect_to(show_all_path) }
     end
@@ -103,26 +103,26 @@ describe MainController do
   end
 
   describe '#delete' do
-    before { delete :destroy, params }
+    before { delete :destroy, params: params }
 
     context 'not allowed the deletion of the Main page' do
-      let(:params) { {params: {page: Rails.application.config.MAIN_PAGE}} }
+      let(:params) { {page: Rails.application.config.MAIN_PAGE} }
 
       it { expect(response).to redirect_to(root_path) }
     end
 
     context 'delete a page' do
-      let(:params) { {params: {page: test_page}} }
+      let(:params) { {page: test_page} }
 
       it { expect(response).to redirect_to(root_path) }
     end
   end
 
   describe '#search' do
-    before { get :search, params }
+    before { get :search, params: params }
 
     context 'search for terms' do
-      let(:params) { {params: {terms: 'xyztest'}} }
+      let(:params) { {terms: 'xyztest'} }
 
       it { expect(assigns(:terms)).to eq 'xyztest' }
       it { expect(assigns(:page).title).to eq 'Main page' }
@@ -130,7 +130,7 @@ describe MainController do
     end
 
     context 'open a new page for creation' do
-      let(:params) { {params: {terms: 'content', commit: 'Create'}} }
+      let(:params) { {terms: 'content', commit: 'Create'} }
 
       it { expect(response).to redirect_to(edit_path('content')) }
     end
